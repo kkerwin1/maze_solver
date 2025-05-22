@@ -66,7 +66,9 @@ class Maze:
         self.__break_entrance_and_exit()
         self.__break_walls_r(0, 0)
         self.__reset_cells_visited()
+        self.route_to_entrance()
         self.solve()
+        self.route_from_exit()
         
     def __draw_cell(self, i, j):
         """
@@ -176,6 +178,36 @@ class Maze:
                     self.__draw_cell(i, j+1)
                     self.__break_walls_r(i, j+1)
 
+    def route_to_entrance(self):
+        """
+        Draw route from edge of map to entrance cell.
+        """
+
+        entrance_cell = self.cells[0][0]
+        x2 = entrance_cell.center_x
+        y2 = entrance_cell.center_y
+        x1 = x2
+        y1 = self.y1
+        point1 = Point(x1, y1)
+        point2 = Point(x2, y2)
+        line = Line(point1, point2)
+        self.win.draw_line(line, ROUTE_COLOR)
+    
+    def route_from_exit(self):
+        """
+        Draw route from exit cell to edge of map.
+        """
+
+        exit_cell = self.cells[len(self.cells)-1][len(self.cells[0])-1]
+        x1 = exit_cell.center_x
+        y1 = exit_cell.center_y
+        x2 = x1
+        y2 = exit_cell.y2
+        point1 = Point(x1, y1)
+        point2 = Point(x2, y2)
+        line = Line(point1, point2)
+        self.win.draw_line(line, ROUTE_COLOR)
+
     def solve(self):
         """
         Entrypoint to solve the maze.
@@ -205,6 +237,14 @@ class Maze:
             return status
         else:
             possible = {}
+            if j <= len(self.cells[0])-2:
+                down = self.cells[i][j+1]
+                if (not down.visited) and not (cell.has_bottom_wall):
+                    possible["down"] = (down, (i, j+1))
+            if i <= len(self.cells)-2:
+                right = self.cells[i+1][j]
+                if (not right.visited) and not (cell.has_right_wall):
+                    possible["right"] = (right, (i+1, j))
             if i > 0:
                 left = self.cells[i-1][j]
                 if (not left.visited) and not (cell.has_left_wall):
@@ -213,14 +253,7 @@ class Maze:
                 up = self.cells[i][j-1]
                 if (not up.visited) and not (cell.has_top_wall):
                     possible["up"] = (up, (i, j-1))
-            if i <= len(self.cells)-2:
-                right = self.cells[i+1][j]
-                if (not right.visited) and not (cell.has_right_wall):
-                    possible["right"] = (right, (i+1, j))
-            if j <= len(self.cells[0])-2:
-                down = self.cells[i][j+1]
-                if (not down.visited) and not (cell.has_bottom_wall):
-                    possible["down"] = (down, (i, j+1))
+            
             
             for direction in possible.keys():
                 destination = possible[direction][0]

@@ -60,10 +60,10 @@ class Cell:
         self.has_right_wall = True
         self.has_top_wall = True
         self.has_bottom_wall = True
-        self.__x1 = -1
-        self.__x2 = -1
-        self.__y1 = -1
-        self.__y2 = -1
+        self.x1 = -1
+        self.x2 = -1
+        self.y1 = -1
+        self.y2 = -1
 
         self.center_x = -1
         self.center_y = -1
@@ -90,10 +90,10 @@ class Cell:
         :type y2: int
         """
 
-        self.__x1 = x1
-        self.__y1 = y1
-        self.__x2 = x2
-        self.__y2 = y2
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
 
         # Calculate the center coordinates of the cell;
         # the move path will connect through the center.
@@ -104,8 +104,8 @@ class Cell:
             color = FG_COLOR
         else:
             color = BG_COLOR
-        point1 = Point(self.__x1, self.__y1)
-        point2 = Point(self.__x1, self.__y2)
+        point1 = Point(self.x1, self.y1)
+        point2 = Point(self.x1, self.y2)
         line = Line(point1, point2)
         if self.__win:
             self.__win.draw_line(line, color)
@@ -114,8 +114,8 @@ class Cell:
             color = FG_COLOR
         else:
             color = BG_COLOR
-        point1 = Point(self.__x1, self.__y1)
-        point2 = Point(self.__x2, self.__y1)
+        point1 = Point(self.x1, self.y1)
+        point2 = Point(self.x2, self.y1)
         line = Line(point1, point2)
         if self.__win:
             self.__win.draw_line(line, color)
@@ -125,8 +125,8 @@ class Cell:
             color = FG_COLOR
         else:
             color = BG_COLOR
-        point1 = Point(self.__x2, self.__y1)
-        point2 = Point(self.__x2, self.__y2)
+        point1 = Point(self.x2, self.y1)
+        point2 = Point(self.x2, self.y2)
         line = Line(point1, point2)
         if self.__win:
             self.__win.draw_line(line, color)
@@ -135,8 +135,8 @@ class Cell:
             color = FG_COLOR
         else:
             color = BG_COLOR
-        point1 = Point(self.__x1, self.__y2)
-        point2 = Point(self.__x2, self.__y2)
+        point1 = Point(self.x1, self.y2)
+        point2 = Point(self.x2, self.y2)
         line = Line(point1, point2)
         if self.__win:
             self.__win.draw_line(line, color)
@@ -154,8 +154,8 @@ class Cell:
         :type undo: bool
         """
 
-        point1 = Point(self.__center_x, self.__center_y)
-        point2 = Point(to_cell.__center_x, to_cell.__center_y)
+        point1 = Point(self.center_x, self.center_y)
+        point2 = Point(to_cell.center_x, to_cell.center_y)
         line = Line(point1, point2)
         
         if undo:
